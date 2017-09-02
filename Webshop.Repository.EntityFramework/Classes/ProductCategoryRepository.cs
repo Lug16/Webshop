@@ -45,5 +45,13 @@ namespace Webshop.Repository.EntityFramework
 
             return item;
         }
+
+        public IEnumerable<ProductCategory> GetByKeys(int[] keys)
+        {
+            if (keys?.Length > 0)
+                return db.ProductCategories.Where(r => keys.Contains(r.ProductCategoryId)).ToArray();
+
+            return new List<ProductCategory>();
+        }
     }
 }

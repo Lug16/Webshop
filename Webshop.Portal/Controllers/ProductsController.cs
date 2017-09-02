@@ -44,7 +44,7 @@ namespace Webshop.Portal.Controllers
         // GET: Products/Create
         public ActionResult Create()
         {
-            ViewBag.ProductCategoryId = new SelectList(db.ProductCategoriesRepository.GetAll(), "ProductCategoryId", "Name");
+            ViewBag.ProductCategoryIds = new SelectList(db.ProductCategoriesRepository.GetAll(), "ProductCategoryId", "Name");
             return View();
         }
 
@@ -53,16 +53,16 @@ namespace Webshop.Portal.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProductId,ProductCategoryId,Number,Name,Price")] ProductModel product)
+        public ActionResult Create([Bind(Include = "ProductId,Number,Name,Price,ProductCategoryIds")] ProductModel product)
         {
             if (ModelState.IsValid)
             {
-                db.ProductsRepository.Add(product.Map());
+                db.ProductsRepository.Add(product.Map(db.ProductCategoriesRepository));
                 db.Complete();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ProductCategoryId = new SelectList(db.ProductCategoriesRepository.GetAll(), "ProductCategoryId", "Name", product.ProductCategoryId);
+            ViewBag.ProductCategoryIds = new MultiSelectList(db.ProductCategoriesRepository.GetAll(), "ProductCategoryId", "Name", product.ProductCategoryIds);
             return View(product);
         }
 
@@ -73,13 +73,13 @@ namespace Webshop.Portal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.ProductsRepository.GetByKey(id);
+            ProductModel product = db.ProductsRepository.GetByKey(id).Map();
             if (product == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ProductCategoryId = new SelectList(db.ProductCategoriesRepository.GetAll(), "ProductCategoryId", "Name", product.ProductCategoryId);
-            return View(product.Map());
+            ViewBag.ProductCategoryIds = new MultiSelectList(db.ProductCategoriesRepository.GetAll(), "ProductCategoryId", "Name", product.ProductCategoryIds);
+            return View(product);
         }
 
         // POST: Products/Edit/5
@@ -87,16 +87,16 @@ namespace Webshop.Portal.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProductId,ProductCategoryId,Number,Name,Price,CreationDate")] Product product)
+        public ActionResult Edit([Bind(Include = "ProductId,Number,Name,Price,ProductCategoryIds")] ProductModel product)
         {
             if (ModelState.IsValid)
             {
-                db.ProductsRepository.Update(product);
+                db.ProductsRepository.Update(product.Map(db.ProductCategoriesRepository));
                 db.Complete();
                 return RedirectToAction("Index");
             }
-            ViewBag.ProductCategoryId = new SelectList(db.ProductCategoriesRepository.GetAll(), "ProductCategoryId", "Name", product.ProductCategoryId);
-            return View(product.Map());
+            ViewBag.ProductCategoryIds = new MultiSelectList(db.ProductCategoriesRepository.GetAll(), "ProductCategoryId", "Name", product.ProductCategoryIds);
+            return View(product);
         }
 
         // GET: Products/Delete/5

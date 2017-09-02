@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Webshop.Kernel;
 using Webshop.Portal.Models;
 
 namespace Webshop.Entities
@@ -16,13 +17,13 @@ namespace Webshop.Entities
                 Name = product.Name,
                 Number = product.Number,
                 Price = product.Price,
-                ProductCategoryId = product.ProductCategoryId,
-                ProductCategoryName = product.ProductCategory.Name,
+                ProductCategoryIds = product.ProductCategories.Select(r=>r.ProductCategoryId).ToArray(),
+                ProductCategoryNames = product.ProductCategories.Select(r => r.Name).ToArray(),
                 ProductId = product.ProductId
             };
         }
 
-        public static Product Map(this ProductModel model)
+        public static Product Map(this ProductModel model, IProductCategoryRepository repo)
         {
             return new Product
             {
@@ -30,7 +31,7 @@ namespace Webshop.Entities
                 Name = model.Name,
                 Number = model.Number,
                 Price = model.Price,
-                ProductCategoryId = model.ProductCategoryId,
+                ProductCategories = (ICollection<ProductCategory>)repo.GetByKeys(model.ProductCategoryIds),
                 ProductId = model.ProductId
             };
         }

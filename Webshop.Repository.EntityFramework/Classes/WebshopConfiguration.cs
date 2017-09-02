@@ -38,8 +38,8 @@ namespace Webshop.Repository.EntityFramework
                 .HasColumnType("datetime2");
 
             HasMany(e => e.Products)
-                .WithRequired(e => e.ProductCategory)
-                .WillCascadeOnDelete(false);
+                .WithMany(e => e.ProductCategories)
+                .Map(m => m.ToTable("ProductCategories_Products").MapLeftKey("ProductCategoryId").MapRightKey("ProductId"));
         }
     }
 

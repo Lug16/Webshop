@@ -61,5 +61,10 @@ namespace Webshop.Repository.MemoryStorage
 
             return entity;
         }
+
+        public IEnumerable<ProductCategory> GetByKeys(int[] keys)
+        {
+            return List.Where(r => keys.Contains(r.ProductCategoryId)).ToArray();
+        }
     }
 }

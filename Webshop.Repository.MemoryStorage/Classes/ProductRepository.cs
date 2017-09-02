@@ -34,9 +34,9 @@ namespace Webshop.Repository.MemoryStorage
 
         public IEnumerable<Product> GetAll()
         {
-            var categories = _context["ProductCategory"] as List<ProductCategory>;
+            //var categories = _context["ProductCategory"] as List<ProductCategory>;
             List = _context["Product"] as List<Product>;
-            List.ForEach(r => r.ProductCategory = categories.Single(i => i.ProductCategoryId == r.ProductCategoryId));
+            //List.ForEach(r => r.ProductCategories = categories.Where(x=>x.);
             return List;
         }
 
@@ -57,13 +57,13 @@ namespace Webshop.Repository.MemoryStorage
 
         public Product Update(Product entity)
         {
-            List.Where(r => r.ProductCategoryId == entity.ProductCategoryId).ToList()
+            List.Where(r => r.ProductId == entity.ProductId).ToList()
                .ForEach(r =>
                {
                    r.Name = entity.Name;
                    r.Number = entity.Number;
                    r.Price = entity.Price;
-                   r.ProductCategoryId = entity.ProductCategoryId;
+                   r.ProductCategories = entity.ProductCategories;
                });
 
             return entity;

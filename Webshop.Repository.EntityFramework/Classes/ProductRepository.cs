@@ -22,7 +22,7 @@ namespace Webshop.Repository.EntityFramework
 
         public IEnumerable<Product> GetAll()
         {
-            return db.Products.Include("ProductCategory").ToList();
+            return db.Products.ToList();
         }
 
         public Product GetByKey(int? key)
@@ -38,6 +38,13 @@ namespace Webshop.Repository.EntityFramework
         public Product Update(Product entity)
         {
             var item = db.Products.Find(entity.ProductId);
+
+            item.ProductCategories.Clear();
+
+            foreach (var i in entity.ProductCategories)
+            {
+                item.ProductCategories.Add(i);
+            }
 
             item.Name = entity.Name;
             item.Number = entity.Number;

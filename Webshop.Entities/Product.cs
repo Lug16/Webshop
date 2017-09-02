@@ -13,8 +13,6 @@ namespace Webshop.Entities
 
         public int ProductId { get; set; }
 
-        public int ProductCategoryId { get; set; }
-
         public string Number { get; set; }
 
         public string Name { get; set; }
@@ -26,6 +24,7 @@ namespace Webshop.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
 
-        public virtual ProductCategory ProductCategory { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProductCategory> ProductCategories { get; set; }
     }
 }

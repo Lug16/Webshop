@@ -10,12 +10,11 @@ namespace Webshop.Portal.Models
     {
         public int ProductId { get; set; }
 
-        [Display(Name = "Category")]
-        public string ProductCategoryName { get; set; }
+        [Display(Name = "Categories")]
+        public string[] ProductCategoryNames { get; set; }
 
-        [Required]
         [Display(Name = "Category Id")]
-        public int ProductCategoryId { get; set; }
+        public int[] ProductCategoryIds { get; set; }
 
         [Required]
         public string Number { get; set; }
@@ -23,7 +22,7 @@ namespace Webshop.Portal.Models
         public string Name { get; set; }
         [Required]
         public decimal Price { get; set; }
-
+        [Display(Name = "Created at")]
         public DateTime CreationDate { get; set; }
     }
 }
